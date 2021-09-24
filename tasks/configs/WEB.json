@@ -1,0 +1,7 @@
+{
+    "task_abbr": "oie",
+    "task_meta": "WEB",
+    "data_dir": "supervised-oie/external_datasets/mesquita_2013/processed/",
+    
+    "gold": "../external_datasets/mesquita_2013/processed/web.oie"
+}

@@ -1,0 +1,51 @@
+#!/bin/bash
+
+CUDA_VISIBLE_DEVICES=$1 
+master_port=$2
+data_dir=$3
+input_dir=$4
+output_dir=$5 
+model_type=$6 
+model_name_or_path=$7
+data_aug=$8
+per_device_eval_batch_size=$9
+generation_type=${10} 
+max_length=${11}
+dedup_ranking_type=${12} 
+add_extra_entity=${13}
+search_attention_head_type=${14}
+search_ranking_type=${15}
+sentence=${16}
+dist_const=${17}
+beam_size=${18}
+beam_mode=${19}
+IFS=', ' read -r -a cuda_arr <<< "$CUDA_VISIBLE_DEVICES"
+nproc_per_node=${#cuda_arr[@]}
+output_dir_ext=${output_dir}${model_name_or_path}.${generation_type}.${data_aug}.${dedup_ranking_type}.${add_extra_entity}.${search_attention_head_type}.${search_ranking_type}.${sentence}.${dist_const}.${beam_size} # output folder containing the results
+
+export OMP_NUM_THREADS=1
+export CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES
+export TOKENIZERS_PARALLELISM=true
+
+python -m torch.distributed.launch --nproc_per_node $nproc_per_node --master_port=$master_port scripts/generator.py \
+    --data_dir=${data_dir} \
+    --input_dir=${input_dir} \
+    --output_dir=${output_dir_ext} \
+    --model_type=$model_type \
+    --model_name_or_path=$model_name_or_path \
+    --data_aug=$data_aug \
+    --per_device_eval_batch_size=$per_device_eval_batch_size \
+    --generation_type=$generation_type \
+    --search_cand_type=entity \
+    --beam_size=$beam_size \
+    --search_max_len=$max_length \
+    --search_min_len=3 \
+    --search_layer_id=-1 \
+    --search_attention_head_type=$search_attention_head_type \
+    --search_ranking_type=$search_ranking_type \
+    --max_length=$max_length \
+    --dedup_ranking_type=$dedup_ranking_type \
+    --add_extra_entity=$add_extra_entity \
+    --sentence=$sentence \
+    --dist_const=$dist_const \
+    --beam_mode=$beam_mode

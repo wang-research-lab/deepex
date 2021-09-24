@@ -1,0 +1,7 @@
+{
+    "task_abbr": "oie",
+    "task_meta": "OIE_2016",
+    "data_dir": "supervised-oie/supervised-oie-benchmark/raw_sentences/",
+    
+    "gold": "oie_corpus/test.oie.orig"
+}

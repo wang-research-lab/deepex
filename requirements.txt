@@ -1,0 +1,21 @@
+dataclasses
+faiss-cpu
+filelock
+flashtext
+jsonlines
+nltk==3.2.5
+numpy
+requests
+scipy
+spacy==3.0.2
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0/en_core_web_sm-3.0.0.tar.gz#egg=en_core_web_sm
+tqdm
+transformers==4.10.3
+wget
+# supervised-oie-dependency below
+certifi
+chardet
+docopt
+idna
+regex!=2019.12.17
+scikit-learn==0.22.0
